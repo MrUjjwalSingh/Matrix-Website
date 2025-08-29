@@ -1,48 +1,68 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+
+interface GalleryImage {
+  src: string;
+  alt: string;
+  title: string;
+}
 
 const Gallery = () => {
-  const galleryImages = [
-    {
-      src: "https://images.pexels.com/photos/3861958/pexels-photo-3861958.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop",
-      alt: "Data Science Workshop",
-      title: "AI Workshop Series"
-    },
-    {
-      src: "https://images.pexels.com/photos/1181244/pexels-photo-1181244.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop",
-      alt: "Team Collaboration",
-      title: "Team Building Event"
-    },
-    {
-      src: "https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop",
-      alt: "Machine Learning Competition",
-      title: "ML Competition Finals"
-    },
-    {
-      src: "https://images.pexels.com/photos/1181675/pexels-photo-1181675.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop",
-      alt: "Industry Expert Talk",
-      title: "Guest Speaker Session"
-    },
-    {
-      src: "https://images.pexels.com/photos/3183197/pexels-photo-3183197.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop",
-      alt: "Hackathon Weekend",
-      title: "48-Hour Hackathon"
-    },
-    {
-      src: "https://images.pexels.com/photos/1181316/pexels-photo-1181316.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop",
-      alt: "Data Visualization Workshop",
-      title: "Visualization Bootcamp"
-    },
-    {
-      src: "https://images.pexels.com/photos/3183156/pexels-photo-3183156.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop",
-      alt: "Research Presentation",
-      title: "Research Showcase"
-    },
-    {
-      src: "https://images.pexels.com/photos/1181263/pexels-photo-1181263.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop",
-      alt: "Club Meeting",
-      title: "Weekly Club Meeting"
-    }
-  ];
+  const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchGalleryImages = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/gallery');
+        if (!response.ok) {
+          throw new Error('Failed to fetch gallery images');
+        }
+        const data = await response.json();
+        setGalleryImages(data.galleryImages);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'An error occurred');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchGalleryImages();
+  }, []);
+
+  if (loading) {
+    return (
+      <section id="gallery" className="py-20 bg-black">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-6xl font-bold font-orbitron text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-green-400 mb-6 glow-text">
+              Gallery
+            </h2>
+            <p className="text-xl text-gray-400 font-mono max-w-3xl mx-auto">
+              Loading gallery images...
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section id="gallery" className="py-20 bg-black">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-6xl font-bold font-orbitron text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-green-400 mb-6 glow-text">
+              Gallery
+            </h2>
+            <p className="text-xl text-red-400 font-mono max-w-3xl mx-auto">
+              Error loading gallery images: {error}
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="gallery" className="py-20 bg-black">

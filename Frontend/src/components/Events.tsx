@@ -1,63 +1,77 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Calendar, Clock, MapPin } from 'lucide-react';
+
+interface Event {
+  title: string;
+  date: string;
+  time: string;
+  venue: string;
+  description: string;
+  color: string;
+}
 
 const Events = () => {
   const [flippedCard, setFlippedCard] = useState<number | null>(null);
+  const [events, setEvents] = useState<Event[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const events = [
-    {
-      title: "AI Workshop Series",
-      date: "March 15, 2024",
-      time: "2:00 PM - 5:00 PM",
-      venue: "Data Lab, Room 301",
-      description: "Deep dive into neural networks and practical implementation using PyTorch. Perfect for beginners and intermediate learners.",
-      color: "from-green-400 to-cyan-500"
-    },
-    {
-      title: "Data Visualization Bootcamp",
-      date: "March 22, 2024",
-      time: "1:00 PM - 4:00 PM",
-      venue: "Computer Lab B",
-      description: "Master the art of data storytelling with D3.js, Plotly, and advanced visualization techniques.",
-      color: "from-cyan-400 to-purple-500"
-    },
-    {
-      title: "ML Competition Finals",
-      date: "April 5, 2024",
-      time: "10:00 AM - 6:00 PM",
-      venue: "Main Auditorium",
-      description: "Present your machine learning projects and compete for the grand prize. Open to all skill levels.",
-      color: "from-purple-500 to-pink-500"
-    },
-    {
-      title: "Industry Expert Talk",
-      date: "April 12, 2024",
-      time: "3:00 PM - 5:00 PM",
-      venue: "Lecture Hall 1",
-      description: "Learn from industry professionals about real-world applications of data science in tech companies.",
-      color: "from-pink-500 to-green-400"
-    },
-    {
-      title: "Hackathon Weekend",
-      date: "April 19-21, 2024",
-      time: "48 hours",
-      venue: "Innovation Hub",
-      description: "Build innovative data science solutions in teams. Food, mentorship, and prizes provided!",
-      color: "from-green-400 to-purple-500"
-    },
-    {
-      title: "Research Paper Workshop",
-      date: "May 3, 2024",
-      time: "2:30 PM - 5:30 PM",
-      venue: "Research Center",
-      description: "Learn how to write and publish your first data science research paper with guidance from faculty.",
-      color: "from-cyan-500 to-pink-400"
-    }
-  ];
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/events');
+        if (!response.ok) {
+          throw new Error('Failed to fetch events');
+        }
+        const data = await response.json();
+        setEvents(data.events);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'An error occurred');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEvents();
+  }, []);
 
   const handleCardClick = (index: number) => {
     setFlippedCard(flippedCard === index ? null : index);
   };
+
+  if (loading) {
+    return (
+      <section id="events" className="py-20 bg-black">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-6xl font-bold font-orbitron text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-500 mb-6 glow-text">
+              Events
+            </h2>
+            <p className="text-xl text-gray-400 font-mono max-w-3xl mx-auto">
+              Loading events...
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section id="events" className="py-20 bg-black">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-6xl font-bold font-orbitron text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-500 mb-6 glow-text">
+              Events
+            </h2>
+            <p className="text-xl text-red-400 font-mono max-w-3xl mx-auto">
+              Error loading events: {error}
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="events" className="py-20 bg-black">

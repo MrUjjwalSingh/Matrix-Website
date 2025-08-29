@@ -1,51 +1,71 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Github, ExternalLink } from 'lucide-react';
 
+interface Project {
+  title: string;
+  description: string;
+  tags: string[];
+  github: string;
+  color: string;
+}
+
 const Projects = () => {
-  const projects = [
-    {
-      title: "Neural Market Predictor",
-      description: "LSTM-based stock market prediction using sentiment analysis and technical indicators.",
-      tags: ["Deep Learning", "LSTM", "Finance", "Python"],
-      github: "https://github.com",
-      color: "from-green-400 to-cyan-500"
-    },
-    {
-      title: "AI Health Diagnostics",
-      description: "Computer vision model for medical image analysis and disease detection.",
-      tags: ["Computer Vision", "CNN", "Healthcare", "TensorFlow"],
-      github: "https://github.com",
-      color: "from-cyan-400 to-purple-500"
-    },
-    {
-      title: "Smart Campus Analytics",
-      description: "Real-time campus data analysis dashboard with predictive modeling.",
-      tags: ["Data Viz", "Dashboard", "IoT", "React"],
-      github: "https://github.com",
-      color: "from-purple-500 to-pink-500"
-    },
-    {
-      title: "NLP Sentiment Engine",
-      description: "Advanced sentiment analysis for social media monitoring and brand insights.",
-      tags: ["NLP", "BERT", "Sentiment", "API"],
-      github: "https://github.com",
-      color: "from-pink-500 to-green-400"
-    },
-    {
-      title: "Climate Data Visualizer",
-      description: "Interactive visualization platform for climate change data and trends.",
-      tags: ["Data Viz", "Climate", "D3.js", "Python"],
-      github: "https://github.com",
-      color: "from-green-400 to-purple-500"
-    },
-    {
-      title: "Autonomous Navigation AI",
-      description: "Reinforcement learning model for autonomous robot navigation in complex environments.",
-      tags: ["RL", "Robotics", "AI", "Simulation"],
-      github: "https://github.com",
-      color: "from-cyan-500 to-pink-400"
-    }
-  ];
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/projects');
+        if (!response.ok) {
+          throw new Error('Failed to fetch projects');
+        }
+        const data = await response.json();
+        setProjects(data.projects);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'An error occurred');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProjects();
+  }, []);
+
+  if (loading) {
+    return (
+      <section id="projects" className="py-20 bg-gradient-to-b from-black to-gray-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-6xl font-bold font-orbitron text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-cyan-500 mb-6 glow-text">
+              Projects
+            </h2>
+            <p className="text-xl text-gray-400 font-mono max-w-3xl mx-auto">
+              Loading projects...
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section id="projects" className="py-20 bg-gradient-to-b from-black to-gray-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-6xl font-bold font-orbitron text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-cyan-500 mb-6 glow-text">
+              Projects
+            </h2>
+            <p className="text-xl text-red-400 font-mono max-w-3xl mx-auto">
+              Error loading projects: {error}
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="projects" className="py-20 bg-gradient-to-b from-black to-gray-900">

@@ -1,48 +1,38 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+
+interface TeamMember {
+  name: string;
+  role: string;
+  image: string;
+  gradient: string;
+}
 
 const Team = () => {
   const carouselRef = useRef<HTMLDivElement>(null);
   const isScrolling = useRef(false);
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const teamMembers = [
-    {
-      name: "Alex Chen",
-      role: "ML Lead",
-      image: "https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
-      gradient: "from-green-400 to-cyan-500"
-    },
-    {
-      name: "Sarah Rodriguez",
-      role: "Data Viz Lead",
-      image: "https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
-      gradient: "from-cyan-400 to-purple-500"
-    },
-    {
-      name: "Marcus Johnson",
-      role: "AI Research Lead",
-      image: "https://images.pexels.com/photos/1516680/pexels-photo-1516680.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
-      gradient: "from-purple-500 to-pink-500"
-    },
-    {
-      name: "Emily Zhang",
-      role: "NLP Specialist",
-      image: "https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
-      gradient: "from-pink-500 to-green-400"
-    },
-    {
-      name: "David Kim",
-      role: "Computer Vision Lead",
-      image: "https://images.pexels.com/photos/2381069/pexels-photo-2381069.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
-      gradient: "from-green-400 to-purple-500"
-    },
-    {
-      name: "Lisa Wang",
-      role: "Data Engineering Lead",
-      image: "https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
-      gradient: "from-cyan-500 to-pink-400"
-    }
-  ];
+  useEffect(() => {
+    const fetchTeamMembers = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/team');
+        if (!response.ok) {
+          throw new Error('Failed to fetch team members');
+        }
+        const data = await response.json();
+        setTeamMembers(data.teamMembers);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'An error occurred');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTeamMembers();
+  }, []);
 
   // Duplicate members for infinite scroll effect
   const infiniteMembers = [...teamMembers, ...teamMembers, ...teamMembers];
@@ -86,7 +76,7 @@ const Team = () => {
         carousel.removeEventListener('mouseleave', handleMouseLeave);
       }
     };
-  }, []);
+  }, [teamMembers]);
 
   const scrollLeft = () => {
     if (carouselRef.current) {
@@ -99,6 +89,40 @@ const Team = () => {
       carouselRef.current.scrollBy({ left: 300, behavior: 'smooth' });
     }
   };
+
+  if (loading) {
+    return (
+      <section id="team" className="py-20 bg-gradient-to-b from-gray-900 to-black relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-6xl font-bold font-orbitron text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 mb-6 glow-text">
+              Team
+            </h2>
+            <p className="text-xl text-gray-400 font-mono max-w-3xl mx-auto">
+              Loading team members...
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section id="team" className="py-20 bg-gradient-to-b from-gray-900 to-black relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-6xl font-bold font-orbitron text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 mb-6 glow-text">
+              Team
+            </h2>
+            <p className="text-xl text-red-400 font-mono max-w-3xl mx-auto">
+              Error loading team members: {error}
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="team" className="py-20 bg-gradient-to-b from-gray-900 to-black relative overflow-hidden">
