@@ -1,6 +1,10 @@
 import React from 'react';
 
-const Footer = () => {
+interface FooterProps {
+  onJoinClubClick: () => void;
+}
+
+const Footer: React.FC<FooterProps> = ({ onJoinClubClick }) => {
   return (
     <footer className="bg-black border-t border-cyan-500/30 py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -33,6 +37,15 @@ const Footer = () => {
             <a href="#contact" className="text-gray-400 hover:text-cyan-400 font-mono text-sm transition-colors duration-300">
               Contact
             </a>
+          </div>
+          
+          <div className="mb-8">
+            <button
+              onClick={onJoinClubClick}
+              className="group relative inline-flex items-center px-6 py-3 text-base font-mono font-medium text-purple-400 border-2 border-purple-400 rounded-lg hover:text-black hover:bg-purple-400 transition-all duration-300 glow-border"
+            >
+              Join Our Club
+            </button>
           </div>
           
           <div className="border-t border-gray-800 pt-8">

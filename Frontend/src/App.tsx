@@ -7,10 +7,12 @@ import Team from './components/Team';
 import Gallery from './components/Gallery';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import JoinClubModal from './components/JoinClubModal';
 
 function App() {
   const [activeSection, setActiveSection] = useState('home');
   const [backendMessage, setBackendMessage] = useState<string>("");
+  const [isJoinClubModalOpen, setIsJoinClubModalOpen] = useState(false);
 
   useEffect(() => {
     // Fetch message from backend
@@ -49,6 +51,18 @@ function App() {
     }
   };
 
+  const handleJoinClubClick = () => {
+    setIsJoinClubModalOpen(true);
+  };
+
+  const handleCloseJoinClubModal = () => {
+    setIsJoinClubModalOpen(false);
+  };
+
+  const handleMeetMembersClick = () => {
+    scrollToSection('team');
+  };
+
   return (
     <div className="bg-black text-white overflow-x-hidden">
       {/* Show backend message at top */}
@@ -59,13 +73,23 @@ function App() {
       )}
 
       <Navigation activeSection={activeSection} onNavigate={scrollToSection} />
-      <Hero onExploreClick={() => scrollToSection('projects')} />
+      <Hero 
+        onExploreClick={() => scrollToSection('projects')} 
+        onJoinClubClick={handleJoinClubClick}
+        onMeetMembersClick={handleMeetMembersClick}
+      />
       <Projects />
       <Events />
       <Team />
       <Gallery />
       <Contact />
-      <Footer />
+      <Footer onJoinClubClick={handleJoinClubClick} />
+      
+      {/* Join Club Modal */}
+      <JoinClubModal 
+        isOpen={isJoinClubModalOpen} 
+        onClose={handleCloseJoinClubModal} 
+      />
     </div>
   );
 }

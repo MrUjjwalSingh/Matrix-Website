@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface TeamMember {
   name: string;
@@ -42,7 +41,7 @@ const Team = () => {
     if (!carousel) return;
 
     let animationFrame: number;
-    const scrollSpeed = 0.5;
+    const scrollSpeed = 2.5;
 
     const scroll = () => {
       if (!isScrolling.current && carousel) {
@@ -78,17 +77,7 @@ const Team = () => {
     };
   }, [teamMembers]);
 
-  const scrollLeft = () => {
-    if (carouselRef.current) {
-      carouselRef.current.scrollBy({ left: -300, behavior: 'smooth' });
-    }
-  };
 
-  const scrollRight = () => {
-    if (carouselRef.current) {
-      carouselRef.current.scrollBy({ left: 300, behavior: 'smooth' });
-    }
-  };
 
   if (loading) {
     return (
@@ -154,20 +143,11 @@ const Team = () => {
         </div>
 
         <div className="relative">
-          {/* Navigation buttons */}
-          <button
-            onClick={scrollLeft}
-            className="absolute left-0 top-1/2 transform -translate-y-1/2 z-20 bg-cyan-400/20 border border-cyan-400 text-cyan-400 p-3 rounded-full hover:bg-cyan-400/30 transition-all duration-300 backdrop-blur-sm"
-          >
-            <ChevronLeft className="h-6 w-6" />
-          </button>
+          {/* Left blur gradient */}
+          <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-gray-900 via-gray-900/80 to-transparent z-10 pointer-events-none" />
           
-          <button
-            onClick={scrollRight}
-            className="absolute right-0 top-1/2 transform -translate-y-1/2 z-20 bg-cyan-400/20 border border-cyan-400 text-cyan-400 p-3 rounded-full hover:bg-cyan-400/30 transition-all duration-300 backdrop-blur-sm"
-          >
-            <ChevronRight className="h-6 w-6" />
-          </button>
+          {/* Right blur gradient */}
+          <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-gray-900 via-gray-900/80 to-transparent z-10 pointer-events-none" />
 
           {/* Carousel */}
           <div

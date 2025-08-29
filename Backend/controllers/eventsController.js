@@ -1,7 +1,7 @@
 export const getEvents = (req, res) => {
   const events = [
     {
-      title: "AI s",
+      title: "AI Summit",
       date: "March 15, 2024",
       time: "2:00 PM - 5:00 PM",
       venue: "Data Lab, Room 301",

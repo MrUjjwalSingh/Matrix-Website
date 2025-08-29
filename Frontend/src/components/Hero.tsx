@@ -3,9 +3,11 @@ import { ChevronDown } from 'lucide-react';
 
 interface HeroProps {
   onExploreClick: () => void;
+  onJoinClubClick: () => void;
+  onMeetMembersClick: () => void;
 }
 
-const Hero: React.FC<HeroProps> = ({ onExploreClick }) => {
+const Hero: React.FC<HeroProps> = ({ onExploreClick, onJoinClubClick, onMeetMembersClick }) => {
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Animated Background */}
@@ -60,13 +62,29 @@ const Hero: React.FC<HeroProps> = ({ onExploreClick }) => {
           </p>
         </div>
 
-        <button
-          onClick={onExploreClick}
-          className="group relative inline-flex items-center px-8 py-4 text-lg font-mono font-medium text-cyan-400 border-2 border-cyan-400 rounded-lg hover:text-black hover:bg-cyan-400 transition-all duration-300 glow-border"
-        >
-          Explore Projects
-          <ChevronDown className="ml-2 h-5 w-5 group-hover:animate-bounce" />
-        </button>
+        <div className="flex flex-col sm:flex-row gap-4 items-center">
+          <button
+            onClick={onExploreClick}
+            className="group relative inline-flex items-center px-8 py-4 text-lg font-mono font-medium text-cyan-400 border-2 border-cyan-400 rounded-lg hover:text-black hover:bg-cyan-400 transition-all duration-300 glow-border double-border"
+          >
+            Explore Projects
+            <ChevronDown className="ml-2 h-5 w-5 group-hover:animate-bounce" />
+          </button>
+          
+          <button
+            onClick={onMeetMembersClick}
+            className="group relative inline-flex items-center px-8 py-4 text-lg font-mono font-medium text-green-400 border-2 border-green-400 rounded-lg hover:text-black hover:bg-green-400 transition-all duration-300 glow-border double-border"
+          >
+            Meet Members
+          </button>
+          
+          <button
+            onClick={onJoinClubClick}
+            className="group relative inline-flex items-center px-8 py-4 text-lg font-mono font-medium text-purple-400 border-2 border-purple-400 rounded-lg hover:text-black hover:bg-purple-400 transition-all duration-300 glow-border double-border"
+          >
+            Join Our Club
+          </button>
+        </div>
       </div>
 
       {/* Scroll Indicator */}
