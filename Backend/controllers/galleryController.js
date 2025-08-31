@@ -1,46 +1,60 @@
-export const getGalleryImages = (req, res) => {
-  const galleryImages = [
-    {
-      src: "https://images.pexels.com/photos/3861958/pexels-photo-3861958.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop",
-      alt: "Data Science Workshop",
-      title: "AI Workshop Series"
-    },
-    {
-      src: "https://images.pexels.com/photos/1181244/pexels-photo-1181244.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop",
-      alt: "Team Collaboration",
-      title: "Team Building Event"
-    },
-    {
-      src: "https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop",
-      alt: "Machine Learning Competition",
-      title: "ML Competition Finals"
-    },
-    {
-      src: "https://images.pexels.com/photos/1181675/pexels-photo-1181675.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop",
-      alt: "Industry Expert Talk",
-      title: "Guest Speaker Session"
-    },
-    {
-      src: "https://images.pexels.com/photos/3183197/pexels-photo-3183197.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop",
-      alt: "Hackathon Weekend",
-      title: "48-Hour Hackathon"
-    },
-    {
-      src: "https://images.pexels.com/photos/1181316/pexels-photo-1181316.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop",
-      alt: "Data Visualization Workshop",
-      title: "Visualization Bootcamp"
-    },
-    {
-      src: "https://images.pexels.com/photos/3183156/pexels-photo-3183156.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop",
-      alt: "Research Presentation",
-      title: "Research Showcase"
-    },
-    {
-      src: "https://images.pexels.com/photos/1181263/pexels-photo-1181263.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop",
-      alt: "Club Meeting",
-      title: "Weekly Club Meeting"
-    }
-  ];
+const Gallery = require('../models/Gallery');
+const cloudinary = require('../config/cloudinary');
+const fs = require('fs');
 
-  res.json({ galleryImages });
+exports.getAllGallery = async (req, res) => {
+  try {
+    const gallery = await Gallery.find().sort({ createdAt: -1 });
+    res.json({ success: true, message: 'Gallery images fetched.', data: gallery });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Server error.', error: err.message });
+  }
+};
+
+exports.createGalleryImage = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ success: false, message: 'No image file uploaded.' });
+    }
+    const result = await cloudinary.uploader.upload(req.file.path, { folder: 'matrix_gallery', resource_type: 'image' });
+    fs.unlinkSync(req.file.path); // Remove local file
+    const { alt, title } = req.body;
+    const image = new Gallery({ src: result.secure_url, alt, title });
+    await image.save();
+    res.status(201).json({ success: true, message: 'Gallery image uploaded.', data: image });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Server error.', error: err.message });
+  }
+};
+
+exports.updateGalleryImage = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updated = await Gallery.findByIdAndUpdate(id, req.body, { new: true });
+    if (!updated) return res.status(404).json({ success: false, message: 'Gallery image not found.' });
+    res.json({ success: true, message: 'Gallery image updated.', data: updated });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Server error.', error: err.message });
+  }
+};
+
+exports.deleteGalleryImage = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deleted = await Gallery.findByIdAndDelete(id);
+    if (!deleted) return res.status(404).json({ success: false, message: 'Gallery image not found.' });
+    res.json({ success: true, message: 'Gallery image deleted.' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Server error.', error: err.message });
+  }
+};
+
+// Public route for frontend
+exports.getGalleryImages = async (req, res) => {
+  try {
+    const gallery = await Gallery.find().sort({ createdAt: -1 });
+    res.json({ success: true, message: 'Gallery images fetched.', data: gallery });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Server error.', error: err.message });
+  }
 };

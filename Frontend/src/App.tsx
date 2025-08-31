@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import Navigation from './components/Navigation';
-import Hero from './components/Hero';
-import Projects from './components/Projects';
-import Events from './components/Events';
-import Team from './components/Team';
-import Gallery from './components/Gallery';
-import Contact from './components/Contact';
-import Footer from './components/Footer';
-import JoinClubModal from './components/JoinClubModal';
+import React, { useEffect, useState } from "react";
+import Navigation from "./components/Navigation";
+import Hero from "./components/Hero";
+import Projects from "./components/Projects";
+import Events from "./components/Events";
+import Team from "./components/Team";
+import Gallery from "./components/Gallery";
+import Contact from "./components/Contact";
+import Footer from "./components/Footer";
+import JoinClubModal from "./components/JoinClubModal";
 
 function App() {
-  const [activeSection, setActiveSection] = useState('home');
+  const [activeSection, setActiveSection] = useState("home");
   const [backendMessage, setBackendMessage] = useState<string>("");
   const [isJoinClubModalOpen, setIsJoinClubModalOpen] = useState(false);
 
@@ -24,7 +24,14 @@ function App() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['home', 'projects', 'events', 'team', 'gallery', 'contact'];
+      const sections = [
+        "home",
+        "projects",
+        "events",
+        "team",
+        "gallery",
+        "contact",
+      ];
       const scrollPosition = window.scrollY + 100;
 
       sections.forEach((section) => {
@@ -32,22 +39,25 @@ function App() {
         if (element) {
           const offsetTop = element.offsetTop;
           const offsetHeight = element.offsetHeight;
-          
-          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+
+          if (
+            scrollPosition >= offsetTop &&
+            scrollPosition < offsetTop + offsetHeight
+          ) {
             setActiveSection(section);
           }
         }
       });
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      element.scrollIntoView({ behavior: "smooth" });
     }
   };
 
@@ -60,7 +70,7 @@ function App() {
   };
 
   const handleMeetMembersClick = () => {
-    scrollToSection('team');
+    scrollToSection("team");
   };
 
   return (
@@ -73,22 +83,22 @@ function App() {
       )}
 
       <Navigation activeSection={activeSection} onNavigate={scrollToSection} />
-      <Hero 
-        onExploreClick={() => scrollToSection('projects')} 
+      <Hero
+        onExploreClick={() => scrollToSection("projects")}
         onJoinClubClick={handleJoinClubClick}
         onMeetMembersClick={handleMeetMembersClick}
       />
-      <Projects />
       <Events />
+      <Projects />
       <Team />
       <Gallery />
       <Contact />
       <Footer onJoinClubClick={handleJoinClubClick} />
-      
+
       {/* Join Club Modal */}
-      <JoinClubModal 
-        isOpen={isJoinClubModalOpen} 
-        onClose={handleCloseJoinClubModal} 
+      <JoinClubModal
+        isOpen={isJoinClubModalOpen}
+        onClose={handleCloseJoinClubModal}
       />
     </div>
   );

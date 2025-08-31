@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { X } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import { X } from "lucide-react";
 
 interface JoinClubModalProps {
   isOpen: boolean;
@@ -16,11 +16,11 @@ interface FormData {
 
 const JoinClubModal: React.FC<JoinClubModalProps> = ({ isOpen, onClose }) => {
   const [formData, setFormData] = useState<FormData>({
-    name: '',
-    email: '',
-    collegeId: '',
-    yearOfStudy: '',
-    skillsInterests: ''
+    name: "",
+    email: "",
+    collegeId: "",
+    yearOfStudy: "",
+    skillsInterests: "",
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -28,27 +28,31 @@ const JoinClubModal: React.FC<JoinClubModalProps> = ({ isOpen, onClose }) => {
   // Handle escape key to close modal
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
+      if (e.key === "Escape") {
         onClose();
       }
     };
 
     if (isOpen) {
-      document.addEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'hidden';
+      document.addEventListener("keydown", handleEscape);
+      document.body.style.overflow = "hidden";
     }
 
     return () => {
-      document.removeEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'unset';
+      document.removeEventListener("keydown", handleEscape);
+      document.body.style.overflow = "unset";
     };
   }, [isOpen, onClose]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -57,30 +61,26 @@ const JoinClubModal: React.FC<JoinClubModalProps> = ({ isOpen, onClose }) => {
     setIsSubmitting(true);
 
     try {
-      // Log the form data to console
-      console.log('Join Club Form Submission:', formData);
-      
       // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       // Reset form
       setFormData({
-        name: '',
-        email: '',
-        collegeId: '',
-        yearOfStudy: '',
-        skillsInterests: ''
+        name: "",
+        email: "",
+        collegeId: "",
+        yearOfStudy: "",
+        skillsInterests: "",
       });
-      
+
       // Close modal
       onClose();
-      
+
       // Show success message (you can replace this with a toast notification)
-      alert('Thank you for joining THE MATRIX! We\'ll be in touch soon.');
-      
+      alert("Thank you for joining THE MATRIX! We'll be in touch soon.");
     } catch (error) {
-      console.error('Error submitting form:', error);
-      alert('Something went wrong. Please try again.');
+      console.error("Error submitting form:", error);
+      alert("Something went wrong. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -91,11 +91,11 @@ const JoinClubModal: React.FC<JoinClubModalProps> = ({ isOpen, onClose }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
-      <div 
+      <div
         className="absolute inset-0 bg-black/60 backdrop-blur-sm"
         onClick={onClose}
       />
-      
+
       {/* Modal */}
       <div className="relative w-full max-w-md bg-gray-900/95 backdrop-blur-md border border-cyan-500/30 rounded-2xl shadow-2xl shadow-cyan-400/20 animate-in slide-in-from-bottom-4 duration-300">
         {/* Close Button */}
@@ -120,7 +120,10 @@ const JoinClubModal: React.FC<JoinClubModalProps> = ({ isOpen, onClose }) => {
         <form onSubmit={handleSubmit} className="p-6 pt-0 space-y-4">
           {/* Name */}
           <div>
-            <label htmlFor="name" className="block text-sm font-mono text-cyan-400 mb-2">
+            <label
+              htmlFor="name"
+              className="block text-sm font-mono text-cyan-400 mb-2"
+            >
               Full Name *
             </label>
             <input
@@ -137,7 +140,10 @@ const JoinClubModal: React.FC<JoinClubModalProps> = ({ isOpen, onClose }) => {
 
           {/* Email */}
           <div>
-            <label htmlFor="email" className="block text-sm font-mono text-cyan-400 mb-2">
+            <label
+              htmlFor="email"
+              className="block text-sm font-mono text-cyan-400 mb-2"
+            >
               Email Address *
             </label>
             <input
@@ -154,7 +160,10 @@ const JoinClubModal: React.FC<JoinClubModalProps> = ({ isOpen, onClose }) => {
 
           {/* College ID */}
           <div>
-            <label htmlFor="collegeId" className="block text-sm font-mono text-cyan-400 mb-2">
+            <label
+              htmlFor="collegeId"
+              className="block text-sm font-mono text-cyan-400 mb-2"
+            >
               College ID *
             </label>
             <input
@@ -171,7 +180,10 @@ const JoinClubModal: React.FC<JoinClubModalProps> = ({ isOpen, onClose }) => {
 
           {/* Year of Study */}
           <div>
-            <label htmlFor="yearOfStudy" className="block text-sm font-mono text-cyan-400 mb-2">
+            <label
+              htmlFor="yearOfStudy"
+              className="block text-sm font-mono text-cyan-400 mb-2"
+            >
               Year of Study *
             </label>
             <select
@@ -194,7 +206,10 @@ const JoinClubModal: React.FC<JoinClubModalProps> = ({ isOpen, onClose }) => {
 
           {/* Skills/Interests */}
           <div>
-            <label htmlFor="skillsInterests" className="block text-sm font-mono text-cyan-400 mb-2">
+            <label
+              htmlFor="skillsInterests"
+              className="block text-sm font-mono text-cyan-400 mb-2"
+            >
               Skills & Interests
             </label>
             <textarea
@@ -220,7 +235,7 @@ const JoinClubModal: React.FC<JoinClubModalProps> = ({ isOpen, onClose }) => {
                 Joining...
               </>
             ) : (
-              'Join THE MATRIX'
+              "Join THE MATRIX"
             )}
           </button>
         </form>
