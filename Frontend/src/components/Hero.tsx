@@ -1,5 +1,5 @@
-import React from 'react';
-import { ChevronDown } from 'lucide-react';
+import React from "react";
+import { ChevronDown } from "lucide-react";
 
 interface HeroProps {
   onExploreClick: () => void;
@@ -7,9 +7,16 @@ interface HeroProps {
   onMeetMembersClick: () => void;
 }
 
-const Hero: React.FC<HeroProps> = ({ onExploreClick, onJoinClubClick, onMeetMembersClick }) => {
+const Hero: React.FC<HeroProps> = ({
+  onExploreClick,
+  onJoinClubClick,
+  onMeetMembersClick,
+}) => {
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section
+      id="home"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+    >
       {/* Animated Background */}
       <div className="absolute inset-0 bg-black">
         <div className="absolute inset-0 opacity-30">
@@ -18,25 +25,47 @@ const Hero: React.FC<HeroProps> = ({ onExploreClick, onJoinClubClick, onMeetMemb
               <div
                 key={i}
                 className="particle"
-                style={{
-                  '--delay': `${Math.random() * 5}s`,
-                  '--duration': `${3 + Math.random() * 4}s`,
-                  '--x': `${Math.random() * 100}%`,
-                  '--y': `${Math.random() * 100}%`,
-                } as React.CSSProperties}
+                style={
+                  {
+                    "--delay": `${Math.random() * 5}s`,
+                    "--duration": `${3 + Math.random() * 4}s`,
+                    "--x": `${Math.random() * 100}%`,
+                    "--y": `${Math.random() * 100}%`,
+                  } as React.CSSProperties
+                }
               />
             ))}
           </div>
         </div>
-        
+
         {/* Data Network Grid */}
         <div className="absolute inset-0 opacity-20">
-          <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <svg
+            className="w-full h-full"
+            viewBox="0 0 100 100"
+            preserveAspectRatio="none"
+          >
             <defs>
-              <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
-                <path d="M 10 0 L 0 0 0 10" fill="none" stroke="url(#gridGradient)" strokeWidth="0.5"/>
+              <pattern
+                id="grid"
+                width="10"
+                height="10"
+                patternUnits="userSpaceOnUse"
+              >
+                <path
+                  d="M 10 0 L 0 0 0 10"
+                  fill="none"
+                  stroke="url(#gridGradient)"
+                  strokeWidth="0.5"
+                />
               </pattern>
-              <linearGradient id="gridGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <linearGradient
+                id="gridGradient"
+                x1="0%"
+                y1="0%"
+                x2="100%"
+                y2="100%"
+              >
                 <stop offset="0%" stopColor="#00ff41" />
                 <stop offset="50%" stopColor="#00d4ff" />
                 <stop offset="100%" stopColor="#a855f7" />
@@ -57,8 +86,9 @@ const Hero: React.FC<HeroProps> = ({ onExploreClick, onJoinClubClick, onMeetMemb
             Data Science Club
           </p>
           <p className="text-lg text-gray-300 max-w-2xl mx-auto mb-12 font-mono">
-            Dive deep into the matrix of data, machine learning, and artificial intelligence. 
-            Where algorithms meet innovation and data tells stories.
+            Dive deep into the matrix of data, machine learning, and artificial
+            intelligence. Where algorithms meet innovation and data tells
+            stories.
           </p>
         </div>
 
@@ -70,14 +100,14 @@ const Hero: React.FC<HeroProps> = ({ onExploreClick, onJoinClubClick, onMeetMemb
             Explore Projects
             <ChevronDown className="ml-2 h-5 w-5 group-hover:animate-bounce" />
           </button>
-          
+
           <button
             onClick={onMeetMembersClick}
             className="group relative inline-flex items-center px-8 py-4 text-lg font-mono font-medium text-green-400 border-2 border-green-400 rounded-lg hover:text-black hover:bg-green-400 transition-all duration-300 glow-border double-border"
           >
             Meet Members
           </button>
-          
+
           <button
             onClick={onJoinClubClick}
             className="group relative inline-flex items-center px-8 py-4 text-lg font-mono font-medium text-purple-400 border-2 border-purple-400 rounded-lg hover:text-black hover:bg-purple-400 transition-all duration-300 glow-border double-border"

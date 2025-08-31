@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
 interface GalleryImage {
   src: string;
@@ -14,14 +14,14 @@ const Gallery = () => {
   useEffect(() => {
     const fetchGalleryImages = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/gallery');
+        const response = await fetch("http://localhost:5000/api/gallery");
         if (!response.ok) {
-          throw new Error('Failed to fetch gallery images');
+          throw new Error("Failed to fetch gallery images");
         }
         const data = await response.json();
-        setGalleryImages(data.galleryImages);
+        setGalleryImages(data.data); // Changed from data.galleryImages to data.data
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred');
+        setError(err instanceof Error ? err.message : "An error occurred");
       } finally {
         setLoading(false);
       }
@@ -87,7 +87,7 @@ const Gallery = () => {
                 alt={image.alt}
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
               />
-              
+
               {/* Overlay */}
               <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                 <div className="text-center">
@@ -96,7 +96,7 @@ const Gallery = () => {
                   </h3>
                 </div>
               </div>
-              
+
               {/* Neon glow effect */}
               <div className="absolute inset-0 border-2 border-cyan-400 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none glow-border-strong" />
             </div>
