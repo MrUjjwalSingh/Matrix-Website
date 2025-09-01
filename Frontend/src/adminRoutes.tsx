@@ -6,6 +6,7 @@ import AdminProjects from "./pages/AdminProjects";
 import AdminEvents from "./pages/AdminEvents";
 import AdminTeam from "./pages/AdminTeam";
 import AdminGallery from "./pages/AdminGallery";
+import AdminFeedbacks from "./pages/AdminFeedbacks";
 import AdminLayout from "./layouts/AdminLayout";
 
 const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
@@ -16,6 +17,16 @@ const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
 const AdminRoutes: React.FC = () => (
   <Routes>
     <Route path="login" element={<AdminLogin />} />
+    <Route
+      path="feedbacks"
+      element={
+        <PrivateRoute>
+          <AdminLayout>
+            <AdminFeedbacks />
+          </AdminLayout>
+        </PrivateRoute>
+      }
+    />
     <Route
       path="*"
       element={

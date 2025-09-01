@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Mail, Github, Linkedin, Instagram, Send } from "lucide-react";
+import FeedbackModal from "./FeedbackModal";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -7,10 +8,25 @@ const Contact = () => {
     email: "",
     message: "",
   });
+  const [showFeedbackModal, setShowFeedbackModal] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission here
+    try {
+      const response = await fetch("/api/forms", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      if (response.ok) {
+        setShowFeedbackModal(true);
+        setFormData({ name: "", email: "", message: "" });
+      } else {
+        // Optionally handle error
+      }
+    } catch (err) {
+      // Optionally handle error
+    }
   };
 
   const handleInputChange = (
@@ -69,7 +85,7 @@ const Contact = () => {
           {/* Contact Form */}
           <div className="bg-gray-900/50 backdrop-blur-sm rounded-xl p-8 border border-cyan-500/30">
             <h3 className="text-2xl font-bold font-orbitron text-cyan-400 mb-6">
-              Send us a message
+              Send Us Your Feedback
             </h3>
 
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -200,6 +216,10 @@ const Contact = () => {
           </div>
         </div>
       </div>
+      <FeedbackModal
+        isOpen={showFeedbackModal}
+        onClose={() => setShowFeedbackModal(false)}
+      />
     </section>
   );
 };

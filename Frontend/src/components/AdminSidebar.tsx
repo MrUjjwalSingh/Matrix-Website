@@ -7,6 +7,7 @@ import {
   FiUsers,
   FiImage,
   FiLogOut,
+  FiMessageCircle,
 } from "react-icons/fi";
 
 const links = [
@@ -15,6 +16,7 @@ const links = [
   { to: "/admin/events", label: "Events", icon: <FiCalendar /> },
   { to: "/admin/team", label: "Team", icon: <FiUsers /> },
   { to: "/admin/gallery", label: "Gallery", icon: <FiImage /> },
+  { to: "/admin/feedbacks", label: "Feedbacks", icon: <FiMessageCircle /> },
 ];
 
 const AdminSidebar: React.FC = () => {
