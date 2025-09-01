@@ -15,11 +15,3 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     </BrowserRouter>
   </React.StrictMode>
 );
-// import React from "react";
-// import ReactDOM from "react-dom/client";
-
-// ReactDOM.createRoot(document.getElementById("root")!).render(
-//   <React.StrictMode>
-//     <div>Router Test</div>
-//   </React.StrictMode>
-// );
