@@ -34,6 +34,7 @@ app.get('/api/gallery', getGalleryImages);
 // Admin routes
 app.use('/api/auth', authRoutes);
 app.use('/api/forms', formRoutes);
+app.use('/api/feedback', formRoutes); // Alias for feedback
 app.use('/api/admin/projects', projectRoutes);
 app.use('/api/admin/events', eventRoutes);
 app.use('/api/admin/team', teamRoutes);
