@@ -19,9 +19,9 @@ const Hero: React.FC<HeroProps> = ({
     >
       {/* Animated Background */}
       <div className="absolute inset-0 bg-black">
-        <div className="absolute inset-0 opacity-30">
+        <div className="absolute inset-0 ">
           <div className="particle-field">
-            {[...Array(50)].map((_, i) => (
+            {[...Array(100)].map((_, i) => (
               <div
                 key={i}
                 className="particle"
